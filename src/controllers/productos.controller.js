@@ -465,32 +465,27 @@ function obtenerProductosDeMiSucu(req, res) {
 
 
 function obtenerUsuariosSucursal(req, res) {
-    // Obtenemos el idSucursal desde los parámetros de la ruta
     const idSucursal = req.params.idSucursal;
 
-    // Verificamos que el idSucursal no esté vacío
     if (!idSucursal) {
         return res.status(400).send({ mensaje: "ID de sucursal no proporcionado" });
     }
 
-    // Definimos los roles que queremos filtrar
-    const rolesPermitidos = ['ROL_GESTOR', 'ROL_FACTURADOR', 'ROL_REPARTIDOR'];
-
-    // Buscamos los usuarios que coincidan con el idSucursal y los roles permitidos
+    // Buscamos únicamente usuarios con rol ROL_CLIENTE
     Usuarios.find({ 
         idSucursal: idSucursal, 
-        rol: { $in: rolesPermitidos } 
+        rol: 'ROL_GESTOR'
     })
-    .sort({ rol: 1 }) // Ordenar por rol
+    .sort({ nombre: 1 }) // Puedes ordenar por nombre u otro campo si prefieres
     .exec((err, usuariosObtenidos) => {
         if (err) {
             return res.status(500).send({ mensaje: "Error: " + err });
         }
 
-        // Retornamos los usuarios obtenidos
         return res.send({ usuarios: usuariosObtenidos });
     });
 }
+
 
 module.exports = {
     agregarProductoRolGestor,

@@ -19,8 +19,18 @@ api.post('/agregarCategoriaAdmin',
     MulterImagen.single('imagen'), 
     CategoriasController.AgregarCategoriaRolAdmin
 );
-
+/*
 api.put ('/editarCategoriaAdmin/:ID', autenticacionToken.Auth, CategoriasController.editarCategoriaRolAdmin);
+*/
+
+/* RUTA ACTUALIZADA */
+api.put(
+  '/editarCategoriaAdmin/:ID',
+  autenticacionToken.Auth,
+  MulterImagen.single('imagen'), 
+  CategoriasController.editarCategoriaRolAdmin
+);
+
 api.delete ('/eliminarCategoriaAdmin/:idCategoria', autenticacionToken.Auth, CategoriasController.eliminarCategoriaRolAdmin);
 api.get ('/getCategoriaAdmin', autenticacionToken.Auth , CategoriasController.getCategoriaRolAdmin);
 api.get ('/getCategoriasIDRolAdmin/:ID', autenticacionToken.Auth, CategoriasController.getCategoriaIDRolAdmin);

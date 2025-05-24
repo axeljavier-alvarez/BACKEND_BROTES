@@ -86,10 +86,7 @@ function agregarUsuario(req, res) {
 // 1. editar usuario
 function editarUsuarioRolCliente(req, res) {
 
-  // Verificar el rol de usuario
-  if (req.user.rol !== 'ROL_ADMIN') {
-    return res.status(403).send({ mensaje: "Unicamente el ROL_ADMIN puede realizar esta acción" });
-  }
+  
 
   var parametros = req.body;
   var idCliente = req.params.ID;

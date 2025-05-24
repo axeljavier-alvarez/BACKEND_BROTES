@@ -180,7 +180,7 @@ function AgregarCategoriaRolAdmin(req, res) {
   }
 }
 
-
+/* 
 function editarCategoriaRolAdmin(req, res){
     
   if(req.user.rol !== 'ROL_ADMIN'){
@@ -195,7 +195,34 @@ function editarCategoriaRolAdmin(req, res){
         if (!categoriaEncontrada)return res.status(500).send({mensaje : "Error al editar la Categoria"});
         return res.status(200).send({categorias:categoriaEncontrada}); 
     })
+} */
+
+    function editarCategoriaRolAdmin(req, res) {
+  if (req.user.rol !== 'ROL_ADMIN') {
+    return res.status(403).send({ mensaje: "Unicamente el ROL_ADMIN puede realizar esta acción" });
+  }
+
+  const idCatAdmin = req.params.ID;
+  const parametros = req.body;
+
+  // Si hay una imagen en el request, agregar el nombre del archivo a los parámetros
+  if (req.file) {
+    parametros.imagen = req.file.filename; // solo guarda el nombre del archivo
+  }
+
+  Categorias.findByIdAndUpdate(idCatAdmin, { $set: parametros }, { new: true }, (err, categoriaActualizada) => {
+    if (err) return res.status(500).send({ mensaje: "Error en la petición" });
+    if (!categoriaActualizada) return res.status(404).send({ mensaje: "No se encontró la categoría" });
+
+    return res.status(200).send({
+      mensaje: "Categoría editada exitosamente",
+      categoria: categoriaActualizada
+    });
+  });
 }
+
+
+
 /* si se elimina una categoria entonces se crea una categoria por defecto y se almacena alli */
 function eliminarCategoriaRolAdmin(req, res){
   const idCat = req.params.idCategoria;
